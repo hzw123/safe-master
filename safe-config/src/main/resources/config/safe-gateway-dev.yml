@@ -1,0 +1,62 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/safe-gateway?useUnicode=true&characterEncoding=gbk&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+  jpa:
+    database: MYSQL
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    open-in-view: true
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          include-expression: true
+          lower-case-service-id: true #服务不区分大小写
+      x-forwarded:
+        port-enabled: false
+      default-filters:
+      - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+      - SaveSession
+      - Single
+      - name: Hystrix
+        args:
+          name: fallbackcmd
+          fallbackUri: forward:/fallback
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  file: ./log/safe-gateway.log
+  level:
+    org.springframework.cloud.gateway: TRACE
+#    org.springframework.http.server.reactive: DEBUG
+#    org.springframework.web.reactive: DEBUG
+#    reactor.ipc.netty: DEBUG

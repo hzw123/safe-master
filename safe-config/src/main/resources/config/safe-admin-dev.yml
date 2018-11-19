@@ -1,0 +1,18 @@
+server:
+  port: 9999
+
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  zipkin:
+    enabled: true
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1.0
+
+logging:
+  file: ./log/safe-admin.log

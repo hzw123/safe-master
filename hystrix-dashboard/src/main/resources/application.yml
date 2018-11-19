@@ -1,0 +1,20 @@
+server:
+  port: 9004
+spring:
+  application:
+    name: hystrix-dashboard
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  file:
+    max-size: 1G

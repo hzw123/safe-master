@@ -1,0 +1,25 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: safe-config
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+  profiles:
+     active: native
+  security:
+    user:
+      name: admin
+      password: 123456
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+
+logging:
+  file: ./log/safe-config.log

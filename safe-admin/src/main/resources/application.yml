@@ -1,0 +1,49 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: safe-admin
+  profiles:
+    active:
+      - secure
+#  boot:
+#    admin:
+#      context-path: /monitor
+#      probed-endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
+#      monitor:
+#        period: 1000          # 更新应用信息的频率，单位毫秒
+#        status-lifetime: 1000 # 被监控的应用信息的过期时间,单位毫秒
+
+  security:
+    user:
+      name: admin
+      password: 123456
+
+  zipkin:
+    enabled: true
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1.0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+    shutdown:
+      enabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+info:
+  version: @project.version@
+
+logging:
+  file: ./log/safe-admin.log
